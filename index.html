@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deniz Software</title>
+  <!-- Google Font: Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- AOS Animasyon CSS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #00BFFF;
+      --primary-color-dark: #008CBA;
+      --hover-color: #888888; /* Kapalı gri hover rengi */
+      --text-color: #fff;
+      --overlay-color: rgba(0, 0, 0, 0.65);
+      --font-family: 'Montserrat', sans-serif;
+    }
+    /* Genel Ayarlar */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      scroll-behavior: smooth;
+      font-family: var(--font-family);
+    }
+    body {
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+    }
+    /* Sabit Navigasyon */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 1rem 2rem;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(5px);
+    }
+    .logo img {
+      max-height: 40px;
+    }
+    /* Hamburger Menü – Mobilde */
+    .hamburger {
+      display: block;
+      cursor: pointer;
+      z-index: 110;
+    }
+    .hamburger span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: var(--text-color);
+      margin: 4px 0;
+      transition: all 0.3s ease;
+    }
+    /* Açılır Menü – Mobilde (varsayılan: gizli) */
+    .menu {
+      display: none;
+      flex-direction: column;
+      align-items: flex-start;
+      position: absolute;
+      top: 100%;
+      right: 2rem;
+      background: rgba(0, 0, 0, 0.9);
+      width: 200px;
+      border-radius: 4px;
+      padding: 1rem;
+    }
+    .menu a {
+      color: var(--text-color);
+      text-decoration: none;
+      margin: 10px 0;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: color 0.3s, transform 0.3s;
+    }
+    .menu a:hover {
+      color: var(--hover-color);
+      transform: translateX(5px);
+    }
+    /* Menü açıkken görünecek sınıf */
+    .menu.active {
+      display: flex;
+    }
+    /* Desktop (Geniş Ekran) için menüyü yatay göster */
+    @media (min-width: 768px) {
+      .hamburger {
+        display: none;
+      }
+      .menu {
+        display: flex !important;
+        flex-direction: row;
+        position: static;
+        background: transparent;
+        width: auto;
+        padding: 0;
+      }
+      .menu a {
+        margin: 0 15px;
+      }
+    }
+    /* Bölüm Ayarları */
+    section {
+      position: relative;
+      height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--text-color);
+      padding: 2rem;
+      overflow: hidden;
+    }
+    /* Arka Plan Görselleri */
+    .bg-home {
+      background: url('./images/image1.jpg') no-repeat center center/cover;
+      filter: brightness(0.85);
+      background-attachment: fixed;
+    }
+    .bg-about {
+      background: url('./images/image2.jpg') no-repeat center center/cover;
+      filter: brightness(0.85);
+      background-attachment: fixed;
+    }
+    .bg-projects {
+      background: url('./images/image3.jpg') no-repeat center center/cover;
+      filter: brightness(0.85);
+      background-attachment: fixed;
+    }
+    .bg-contact {
+      background: url('./images/image4.jpg') no-repeat center center/cover;
+      filter: brightness(0.85);
+      background-attachment: fixed;
+    }
+    /* Overlay (Filtre) */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 100%);
+      z-index: 1;
+    }
+    /* İçerik Konteyneri */
+    .content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: 1rem;
+    }
+    h1, h2 {
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .cta-button {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: var(--primary-color);
+      color: var(--text-color);
+      text-decoration: none;
+      border-radius: 4px;
+      margin-top: 1rem;
+      font-weight: 600;
+      transition: background 0.3s, transform 0.3s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .cta-button:hover {
+      background: var(--primary-color-dark);
+      transform: translateY(-2px);
+    }
+    /* Proje Listesi */
+    .project-list {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+    .project-list li {
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigasyon Menüsü -->
+  <nav class="navbar">
+    <div class="logo">
+      <!-- Logonuzu buraya ekleyin; dosya yolunu güncelleyin -->
+      <a href="#home"><img src="./images/logo.png" alt="Deniz Software Logo"></a>
+    </div>
+    <!-- Hamburger simgesi – mobilde gözükecek -->
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <!-- Menü: mobilde açılır, desktop'ta yatay görüntülenir -->
+    <div class="menu" id="menu">
+      <a href="#home" onclick="closeMenu()">Ana Sayfa</a>
+      <a href="#about" onclick="closeMenu()">Hakkımızda</a>
+      <a href="#projects" onclick="closeMenu()">Projelerimiz</a>
+      <a href="#contact" onclick="closeMenu()">İletişim</a>
+    </div>
+  </nav>
+
+  <!-- Ana Sayfa Bölümü (Home) -->
+  <section id="home" class="bg-home">
+    <div class="overlay"></div>
+    <div class="content" data-aos="fade-up">
+      <h1>Deniz Software</h1>
+      <p>Yazılımı geleceğe taşıyoruz! Hastane, randevu sistemleri, İK, savunma ve okul sistemleri başta olmak üzere, birçok sektöre özgü çözümler geliştiriyoruz.</p>
+      <a href="#projects" class="cta-button">Projelerimizi İnceleyin</a>
+    </div>
+  </section>
+
+  <!-- Hakkımızda Bölümü -->
+  <section id="about" class="bg-about">
+    <div class="overlay"></div>
+    <div class="content" data-aos="fade-up">
+      <h2>Hakkımızda</h2>
+      <p>Deniz Software, modern teknolojiyi ve yaratıcı çözümleri bir araya getirerek müşterilerine özel yazılım hizmetleri sunmaktadır. Ekibimiz, her sektöre uyum sağlayan, yenilikçi ve ölçeklenebilir projeler tasarlar.</p>
+    </div>
+  </section>
+
+  <!-- Projelerimiz Bölümü -->
+  <section id="projects" class="bg-projects">
+    <div class="overlay"></div>
+    <div class="content" data-aos="fade-up">
+      <h2>Projelerimiz</h2>
+      <p>Geliştirdiğimiz projeler arasında:</p>
+      <ul class="project-list">
+        <li>🏥 Hastane &amp; Randevu Sistemleri</li>
+        <li>💼 İK Sistemleri</li>
+        <li>🛡️ Savunma Sistemleri</li>
+        <li>🏫 Okul Yönetim Sistemleri</li>
+        <li>🔧 Diğer özel yazılım projeleri</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- İletişim Bölümü -->
+  <section id="contact" class="bg-contact">
+    <div class="overlay"></div>
+    <div class="content" data-aos="fade-up">
+      <h2>İletişim</h2>
+      <p>Sizinle çalışmaktan mutluluk duyarız. Bize ulaşın:</p>
+      <p><strong>Email:</strong> info@denizsoftware.com</p>
+      <p><strong>Telefon:</strong> +90 555 555 5555</p>
+    </div>
+  </section>
+
+  <!-- AOS Animasyon JS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1200,
+      easing: 'ease-in-out',
+      once: true
+    });
+    
+    function toggleMenu() {
+      document.getElementById("menu").classList.toggle("active");
+    }
+    
+    function closeMenu() {
+      document.getElementById("menu").classList.remove("active");
+    }
+  </script>
+</body>
+</html>
